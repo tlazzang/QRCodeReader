@@ -28,6 +28,20 @@ class MainActivity : AppCompatActivity() {
         intentIntegrator.initiateScan()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            if (result.contents == null) {
+                Toast.makeText(applicationContext, "스캔 취소", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(applicationContext, "스캔 결과: " + result.contents, Toast.LENGTH_LONG).show()
+                sendTextToServer(result.contents)
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     private fun sendTextToServer(value: String) {
         val map: HashMap<String, Any> = HashMap()
         map.put("value", value)
@@ -51,19 +65,5 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (requestCode == IntentIntegrator.REQUEST_CODE) {
-            if (result.contents == null) {
-                Toast.makeText(applicationContext, "스캔 취소", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(applicationContext, "스캔 결과: " + result.contents, Toast.LENGTH_LONG).show()
-                sendTextToServer(result.contents)
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
     }
 }
