@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val map: HashMap<String, Any> = HashMap()
         map.put("value", value)
         map.put("name", name)
-        map.put("phone", phone)
+        map.put("phone", phone) //validation check 필요
         RetrofitInstance.retrofitInstance.create(RetrofitService::class.java).postText(map).enqueue(object:
             retrofit2.Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
